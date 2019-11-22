@@ -25,12 +25,12 @@ class SignUp extends React.Component {
     async signUp() {
         //const { username, email, password, password_verify } = this.state;
         try {
+            const headers = new Headers();
+            headers.append("Authorization", "REHEX2B-R51MB6Y-MGVJWGP-HSJW140")
             const response = await fetch("https://doggo-express-server.herokuapp.com/api/v1/users/1", {
-                method: 'get',
-                headers: {
-                    'authorization': "REHEX2B-R51MB6Y-MGVJWGP-HSJW140"
-                },
-                mode: 'no-cors'
+                method: 'GET',
+                headers: headers,
+                mode: 'cors'
             });
             console.log(response)
         } catch (err) {
