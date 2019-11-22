@@ -32,7 +32,8 @@ class SignUp extends React.Component {
                 headers: headers,
                 mode: 'cors'
             });
-            console.log(response)
+            const data = await response.text();
+            console.log(JSON.parse(data));
         } catch (err) {
             console.error(err);
         }
