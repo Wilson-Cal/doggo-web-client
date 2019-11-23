@@ -2,10 +2,12 @@ import React from 'react';
 import { TextInput, Button, Icon, Preloader } from 'react-materialize';
 import { } from './common';
 
+import makeRequest from '../utilities/makeRequest.js';
+
 class SignUp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { loading: false, username: "", email: "", password: "", password_verify: "" };
+        this.state = { loading: false, username: "", email: "", password: "", password_verify: "", validated: false, error: "" };
 
         // This binding is necessary to make `this` work in the callback
         this.handleChange = this.handleChange.bind(this);
@@ -13,8 +15,16 @@ class SignUp extends React.Component {
         this.signUp = this.signUp.bind(this);
     }
 
+    componentDidUpdate() {
+
+    }
+
     handleChange(event, property) {
-        this.setState({ [property]: event.target.value });
+        this.setState({ [property]: event.target.value }, () => {
+            const { username, email, password, password_verify } = this.state;
+            const validated = username.length > 4 && email.length > 4 && password.length > 6 && password_verify.length > 6 && password_verify === password;
+            this.setState({ validated });
+        });
     }
 
     handleSubmit(event) {
@@ -23,43 +33,41 @@ class SignUp extends React.Component {
     }
 
     async signUp() {
-        const { username, email, password, password_verify } = this.state;
-        if (password === password_verify) {
+        const { username, email, password } = this.state;
+        if (this.state.validated) {
             const body = { username, email, password };
-            try {
-                this.setState({ loading: true });
-                const response = await fetch("https://doggo-express-server.herokuapp.com/api/v1/signup", {
-                    body: JSON.stringify(body),
-                    method: 'POST',
-                    mode: 'cors'
-                });
-                const data = await response.text();
-                this.setState({ loading: false });
-                console.log(data);
-            } catch (err) {
-                console.error(err);
-                this.setState({ loading: false });
+            this.setState({ loading: true });
+            let response = await makeRequest('https://doggo-express-server.herokuapp.com/api/v1/signup', body);
+            if (response.error) {
+                this.setState({ error: response.error_message.message, loading: false, validated: false });
+            } else {
+                this.setState({ loading: false, validated: false });
             }
+        } else {
+            // throw error
         }
     }
 
     render() {
+        //console.log(this.state.validated);
         if (!this.state.loading) {
             return (
                 <form onSubmit={this.signUp}>
                     <h1>Sign Up</h1>
-                    <TextInput label="Username" icon="account_box" value={this.state.value} onChange={event => this.handleChange(event, "username")} required />
+                    <TextInput label="Username" icon="account_box" value={this.state.value} onChange={event => this.handleChange(event, "username")} validate required />
                     <TextInput label="Email" icon="email" value={this.state.value} onChange={event => this.handleChange(event, "email")} email validate required />
-                    <TextInput label="Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password")} required />
-                    <TextInput label="Re-enter Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password_verify")} required />
-                    <Button waves="light" style={{ marginRight: '5px' }} type="submit" onClick={this.handleSubmit}>Sign Up<Icon left>send</Icon></Button>
+                    <TextInput label="Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password")} validate required />
+                    <TextInput label="Re-enter Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password_verify")} validate required />
+                    <Button waves="light" style={{ marginRight: '5px' }} type="submit" onClick={this.handleSubmit} disabled={!this.state.validated}>Sign Up<Icon left>send</Icon></Button>
+                    <p>{this.state.error}</p>
                 </form >
+
             );
         } else {
             return (
                 <div style={{ textAlign: "center", marginTop: "25%" }}>
                     <Preloader size="big" />
-                    <p>Signing Up...</p>
+                    <p>Building Dog House...</p>
                 </div >
             )
         }
