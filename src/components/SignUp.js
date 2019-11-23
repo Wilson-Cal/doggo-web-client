@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, Button, Icon, Preloader } from 'react-materialize';
+import { TextInput, Button, Icon, Preloader, Modal } from 'react-materialize';
 import { } from './common';
 
 import makeRequest from '../utilities/makeRequest.js';
@@ -7,16 +7,12 @@ import makeRequest from '../utilities/makeRequest.js';
 class SignUp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { loading: false, username: "", email: "", password: "", password_verify: "", validated: false, error: "" };
+        this.state = { loading: false, username: "", email: "", password: "", password_verify: "", validated: false, error: "", showModal: false, modalContent: "" };
 
         // This binding is necessary to make `this` work in the callback
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.signUp = this.signUp.bind(this);
-    }
-
-    componentDidUpdate() {
-
     }
 
     handleChange(event, property) {
@@ -41,7 +37,7 @@ class SignUp extends React.Component {
             if (response.error) {
                 this.setState({ error: response.error_message, loading: false, validated: false });
             } else {
-                this.setState({ loading: false, validated: false, error: "" });
+                this.setState({ loading: false, validated: false, error: "", showModal: true, modalContent: "Account Succesfully Created" });
             }
         } else {
             // throw error
@@ -49,7 +45,6 @@ class SignUp extends React.Component {
     }
 
     render() {
-        //console.log(this.state.validated);
         if (!this.state.loading) {
             return (
                 <form onSubmit={this.signUp}>
@@ -60,8 +55,8 @@ class SignUp extends React.Component {
                     <TextInput label="Re-enter Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password_verify")} validate required />
                     <Button waves="light" style={{ marginRight: '5px' }} type="submit" onClick={this.handleSubmit} disabled={!this.state.validated}>Sign Up<Icon left>send</Icon></Button>
                     <p className="red-text text-lighten-1">{this.state.error}</p>
-                </form >
-
+                    <Modal header="Doggo Account" open={this.state.showModal}>{this.state.modalContent}</Modal>
+                </form>
             );
         } else {
             return (
