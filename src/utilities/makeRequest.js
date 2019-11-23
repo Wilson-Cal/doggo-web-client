@@ -9,8 +9,13 @@ const makeRequest = async (uri, body) => {
             mode: 'cors',
             body: JSON.stringify(body)
         });
-        let data = await response.text();
-        data.error = false;
+        let data = await response.json();
+        if (data.name === "error") {
+            data.error = true;
+            data.error_message = `Error: ${data.detail.replace(/\(|\)|=|key/gi, " ")}`;
+        } else {
+            data.error = false;
+        }
         return data;
     } catch (err) {
         console.error(err);

@@ -39,7 +39,7 @@ class SignUp extends React.Component {
             this.setState({ loading: true });
             let response = await makeRequest('https://doggo-express-server.herokuapp.com/api/v1/signup', body);
             if (response.error) {
-                this.setState({ error: response.error_message.message, loading: false, validated: false });
+                this.setState({ error: response.error_message, loading: false, validated: false });
             } else {
                 this.setState({ loading: false, validated: false, error: "" });
             }
@@ -59,7 +59,7 @@ class SignUp extends React.Component {
                     <TextInput label="Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password")} validate required />
                     <TextInput label="Re-enter Password" icon="lock" type="password" value={this.state.value} onChange={event => this.handleChange(event, "password_verify")} validate required />
                     <Button waves="light" style={{ marginRight: '5px' }} type="submit" onClick={this.handleSubmit} disabled={!this.state.validated}>Sign Up<Icon left>send</Icon></Button>
-                    <p>{this.state.error}</p>
+                    <p className="red-text text-lighten-1">{this.state.error}</p>
                 </form >
 
             );
