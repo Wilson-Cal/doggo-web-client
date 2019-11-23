@@ -41,7 +41,7 @@ class SignUp extends React.Component {
             if (response.error) {
                 this.setState({ error: response.error_message.message, loading: false, validated: false });
             } else {
-                this.setState({ loading: false, validated: false });
+                this.setState({ loading: false, validated: false, error: "" });
             }
         } else {
             // throw error
