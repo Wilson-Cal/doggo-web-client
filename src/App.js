@@ -69,7 +69,7 @@ class App extends React.Component {
   }
 
   renderHome() {
-    const { user, addingDog } = this.state;
+    const { user } = this.state;
     const { authToken } = this.state;
     if (authToken) {
       return <Home user={user} authToken={authToken} />

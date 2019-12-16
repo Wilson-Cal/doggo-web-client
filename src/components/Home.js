@@ -74,15 +74,17 @@ class Home extends React.Component {
 
                                     </div>
                                     <div className="card-reveal">
-                                        <span className="card-title grey-text text-darken-4">{dog.dog_name}<i className="material-icons right">close</i></span>
-                                        <p><i className="material-icons left">list</i>Type: {dog.type_of_dog}</p>
-                                        <p><i className="material-icons left">wc</i>Sex: {dog.sex}</p>
-                                        <p><i className="material-icons left">cake</i>Age: {dog.age}</p>
-                                        <p><i className="material-icons left">color_lens</i>Color: {dog.color}</p>
-                                        <p><i className="material-icons left">slow_motion_video</i>Weight: {dog.dog_weight}</p>
-                                        <p><i className="material-icons left">height</i>Height: {dog.dog_height}</p>
-                                        <p><i className="material-icons left">attach_money</i>For Sale: {dog.available}</p>
-                                        {dog.price ? <p><i className="material-icons left">attach_money</i>Price: ${dog.price}</p> : false}
+                                        <div style={{ overflow: 'auto', height: '310px' }}>
+                                            <span className="card-title grey-text text-darken-4">{dog.dog_name}<i className="material-icons right">close</i></span>
+                                            <p><i className="material-icons left">list</i>Type: {dog.type_of_dog}</p>
+                                            <p><i className="material-icons left">wc</i>Sex: {dog.sex}</p>
+                                            <p><i className="material-icons left">cake</i>Age: {dog.age}</p>
+                                            <p><i className="material-icons left">color_lens</i>Color: {dog.color}</p>
+                                            <p><i className="material-icons left">slow_motion_video</i>Weight: {dog.dog_weight}</p>
+                                            <p><i className="material-icons left">height</i>Height: {dog.dog_height}</p>
+                                            <p><i className="material-icons left">attach_money</i>For Sale: {dog.available}</p>
+                                            {dog.price ? <p><i className="material-icons left">attach_money</i>Price: ${dog.price}</p> : false}
+                                        </div>
                                         <div className="card-action">
                                             <Button node="button" className="right red" onClick={() => this.deleteDog(dog.id)} waves="light">
                                                 Delete
