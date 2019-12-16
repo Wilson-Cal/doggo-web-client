@@ -42,7 +42,6 @@ class AddDog extends React.Component {
         let { user_id, authToken } = this.props;
         let { validated, name, type, sex, age, color, weight, height, available, price } = this.state;
         if (validated) {
-            sex = sex.toLowerCase() === 'male' ? true : false;
             available = available === 'true' ? true : false;
             user_id = Number(user_id);
             age = Number(age);
