@@ -43,9 +43,8 @@ class LogIn extends React.Component {
             if (!response.match) {
                 this.setState({ error: "Invalid Email or Password", loading: false, validated: false });
             } else {
+                this.props.setUser(response.username, response.user_id, response.email);
                 this.props.setCookie('doggo-auth', response.cookieValue, { expires: new Date((Date.now() + 86400000)) });
-                this.props.setUser("Temp Username", email);
-                this.setState({ loading: false, validated: false, error: '' });
             }
         }
     }

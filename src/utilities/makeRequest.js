@@ -1,15 +1,21 @@
-const makeRequest = async (uri, requestObj) => {
+const makeRequest = async (uri, requestObj, authToken = "") => {
     try {
         requestObj.headers = {
             'Accept': 'application/json',
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'authorization': authToken
         };
         requestObj.mode = 'cors';
         const response = await fetch(uri, requestObj);
         let data = await response.json();
         if (data.name === 'error') {
+            console.log(data);
             data.error = true;
-            data.error_message = `Error: ${data.detail.replace(/\(|\)|=|key/gi, " ")}`;
+            if (data.detail !== undefined) {
+                data.error_message = `Error: ${data.detail.replace(/\(|\)|=|key/gi, " ")}`;
+            } else {
+                data.error_message = 'Error adding Doggo. Please try again.';
+            }
         } else {
             data.error = false;
         }

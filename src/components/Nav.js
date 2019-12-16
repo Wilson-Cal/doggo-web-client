@@ -44,22 +44,24 @@ class Nav extends React.Component {
                         </div>
                     </li>
                     <li>
-                        <a href="#!" className="waves-effect"><i className="material-icons">cloud</i>First Link With Icon</a>
-                        <a href="#!" className="waves-effect"><i className="material-icons">cloud</i>First Link With Icon</a>
-                        <a href="#!" className="waves-effect"><i className="material-icons">cloud</i>First Link With Icon</a>
-                        <a href="#!" className="waves-effect"><i className="material-icons">cloud</i>First Link With Icon</a>
-                        <a href="#!" className="waves-effect"><i className="material-icons">cloud</i>First Link With Icon</a>
-                        <a href="#!" className="waves-effect"><i className="material-icons">cloud</i>First Link With Icon</a>
+                        {this.renderSideNavItems()}
                     </li>
                 </ul>
             )
         }
     }
 
+    renderSideNavItems() {
+        const { navItems } = this.props;
+        return navItems.map((navItem, i) => {
+            return <Link to={navItem.href} key={`navItem${i}`} onClick={navItem.func}><Icon left>{navItem.icon}</Icon>{navItem.name}</Link>
+        });
+    }
+
     renderNavBarItems() {
         const { navItems } = this.props;
         return navItems.map((navItem, i) => {
-            return <NavItem key={`navItem${i}`} onClick={navItem.func}><Icon left>{navItem.icon}</Icon>{navItem.name}</NavItem>
+            return <Link to={navItem.href} key={`navItem${i}`} onClick={navItem.func}><Icon left>{navItem.icon}</Icon>{navItem.name}</Link>
         });
     }
 
